@@ -1,0 +1,9 @@
+/core/tmp/
+/.venv/
+/.env
+/config.json
+/poetry.lock
+/errors.log
+/tags.json
+/documents.db
+/tmp/
