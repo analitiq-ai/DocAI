@@ -6,14 +6,14 @@ from pathlib import Path
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import PromptTemplate
-from doc_manager.models import DocumentRaw, DocumentLlm, DocumentStructured, DocumentStructuredTranslated
-from doc_manager.prompt import PROCESS_DOC_TEXT_PROMPT, COMMON_INSTRUCTIONS, PROCESS_TRANSLATE_DOC_TEXT_PROMPT
-from doc_manager.items_manager import ItemsManager
-from doc_manager.processors.ocr import OCRProcessor
+from doc_ai.models import DocumentRaw, DocumentLlm, DocumentStructured, DocumentStructuredTranslated
+from doc_ai.prompt import PROCESS_DOC_TEXT_PROMPT, COMMON_INSTRUCTIONS, PROCESS_TRANSLATE_DOC_TEXT_PROMPT
+from doc_ai.items_manager import ItemsManager
+from doc_ai.processors.ocr import OCRProcessor
 from langdetect import detect_langs
-from doc_manager.utils.general import ALL_LANGUAGES
-from doc_manager.utils.pdf_to_img import pdf_to_page_imgs
-from doc_manager.utils.img import resize_image_to_size
+from doc_ai.utils.general import ALL_LANGUAGES
+from doc_ai.utils.pdf_to_img import pdf_to_page_imgs
+from doc_ai.utils.img import resize_image_to_size
 
 # ------------------------------------------------------------------------
 # Document Processing

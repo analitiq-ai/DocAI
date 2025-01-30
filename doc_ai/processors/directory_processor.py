@@ -2,10 +2,10 @@ import os
 import sqlite3
 from pathlib import Path
 from pytz import timezone
-from doc_manager.utils.db import create_table, add_document_db
-from doc_manager.document_processor import DocumentProcessor
-from doc_manager.models import Document
-from doc_manager.utils.general import move_file, get_file_creation_time, generate_directory_tree, ALL_LANGUAGES
+from doc_ai.utils.db import create_table, add_document_db
+from doc_ai.document_processor import DocumentProcessor
+from doc_ai.models import Document
+from doc_ai.utils.general import move_file, get_file_creation_time, generate_directory_tree, ALL_LANGUAGES
 from weaviate.util import generate_uuid5
 
 # Define the CET timezone
@@ -14,7 +14,7 @@ cet_timezone = timezone("CET")
 # ------------------------------------------------------------------------
 # Configure Logging
 # ------------------------------------------------------------------------
-from doc_manager.logger_setup import setup_logger
+from doc_ai.logger_setup import setup_logger
 import logging
 # Configure the logger
 setup_logger(log_file="errors.log", console_level=logging.INFO, file_level=logging.ERROR)
