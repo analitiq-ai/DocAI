@@ -1,4 +1,4 @@
-# AI Document Management and Search Application
+# Organise and Translate your documents with AI
 "I was drowning in thousands of documents in four different languages—cluttering my shelves and buried in countless computer folders. Then one day, I'd had enough! But instead of organizing them myself (because let’s be real, I’m too lazy for that), I made AI do the hard work. And what happened next is this project... 👀🔥"
 
 > **Transform your documents into structured, organized, and queryable knowledge!**  
