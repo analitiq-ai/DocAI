@@ -1,4 +1,5 @@
 # AI Document Management and Search Application
+"I was drowning in thousands of documents in four different languages—cluttering my shelves and buried in countless computer folders. Then one day, I'd had enough! But instead of organizing them myself (because let’s be real, I’m too lazy for that), I made AI do the hard work. And what happened next is this project... 👀🔥"
 
 > **Transform your documents into structured, organized, and queryable knowledge!**  
 This Python-based app helps you make sense of your PDFs and image files by automatically extracting text, summarizing content, tagging key details like language and topics, and organizing everything neatly into folders. It even compiles documents into a vector database, making them easy to search. Plus, with built-in multilingual support, it can translate foreign-language documents into your preferred language, so nothing gets lost in translation.
