@@ -31,9 +31,10 @@ This Python-based app helps you make sense of your PDFs and image files by autom
 
 #### Example:
 ```python
+from pathlib import Path
 from doc_ai.utils.general import move_file
 # Organize a file into a categorized folder
-new_directory = move_file("input/document.pdf", "Organized/Taxes", "document.pdf")
+new_directory = move_file(Path("input/document.pdf"), "Organized/Taxes", "document.pdf")
 print("New Directory:", new_directory)
 ```
 
@@ -54,10 +55,10 @@ Pushes processed documents into a **Weaviate** vector database to enable efficie
 ```python
 from doc_ai.clients.vdb_client import VdbClient
 
- vdb = VdbClient(collection_name="Documents")
- results = vdb.langchain_search("Find documents related to taxes")
- for doc, score in results:
-     print(f"Document: {doc}, Score: {score}")
+vdb = VdbClient(collection_name="Documents")
+results = vdb.langchain_search("Find documents related to taxes")
+for doc, score in results:
+  print(f"Document: {doc}, Score: {score}")
 ```
 
 #### Weaviate Prerequisites:
