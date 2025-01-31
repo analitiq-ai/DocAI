@@ -120,8 +120,7 @@ print("Image successfully resized under 5MB!")
 ### Installation
 1. Clone the repository:
 ```shell script
-git clone https://github.com/your-repo/document-manager.git
-    cd document-manager
+git clone https://github.com/analitiq-ai/DocAI
 ```
 
 2. Install dependencies via `poetry`:
@@ -134,15 +133,16 @@ poetry install
 docker run -d -p 8080:8080 semitechnologies/weaviate:latest
 ```
 
-4. Set up the embedding service using Ollama:
+4. Install Ollama and pull `nomic-embed-text` encoder and `llama3.2` llm.
 ```shell script
-# Download Ollama from https://ollama.ai
-    start-ollama --model llama3.2
+ollama pull nomic-embed-text, llama3.2
+ollama pull llama3.2
+start-ollama --model llama3.2
 ```
+
 5. Set up configuration that is unique to you:
-   - Copy `.env_template` into `.env` and set up API keys. The default model is using Mistral on AWS Bedrock. 
-   - Copy `config_template.json` into `config.json` and set up the parameters to suit you.
-   - Copy `tags_template.json` into `tags_.json` and set up the tags that are important to your life.
+   - Rename `.env_template` into `.env` and set up API keys for Bedrock LLM. The default model is using Mistral on AWS Bedrock. 
+   - Rename `config_template.json` into `config.json` and set up the parameters for your LLMs.
 
 
 6. Set up `COMMON_INSTRUCTIONS` in prompts.py. These are general instructions about what the model should know about you. For example "I have a company called Acme Enterprises."
@@ -153,9 +153,7 @@ docker run -d -p 8080:8080 semitechnologies/weaviate:latest
 
 8. Run `python main.py` to launch DocAi application and make it organise your documents.
 
-
 ---
-
 
 ## Configuration
 
@@ -163,16 +161,18 @@ The application's behavior is controlled through a `config.json` file. Below is 
 
 ```json
 {
-  "TARGET_DIRECTORY": "/path/to/documents",
-  "EXTENSIONS": [".pdf", ".jpeg", ".jpg", ".png"],
-  "EXCLUDED_DIRECTORIES": ["node_modules", "venv"],
-  "LLM_CONTEXT_LENGTH": 200000,
-  "DIR_ORGANISED": "/path/to/organized/documents",
-  "tags_list_filename": "tags.json",
-  "categories_list_filename": "categories.json",
-  "user_language": "en",
-  "document_languages": ["de", "en", "ru", "fr"],
-  "img_mb_limit": 4
+   "TARGET_DIRECTORY": "/path/to/documents",
+   "DIR_ORGANISED": "/path/to/organized/documents", 
+   "EXTENSIONS": [".pdf", ".jpeg", ".jpg", ".png"], 
+   "EXCLUDED_DIRECTORIES": ["node_modules", "venv"], 
+   "CATEGORIES": ["my_category1"], 
+   "USER_LANGUAGE": "en",
+   "DOCUMENT_LANGUAGES": ["de", "en", "ru", "bu", "ro"],
+   "TESSDATA_DIR": "../tmp/",
+   "LLM_CONTEXT_LENGTH": 200000,
+   "IMG_MB_LIMIT": 4,
+   "SQLDB_DB_PATH": "../documents.db",
+   "SQLITE_TABLE_NAME": "documents"
 }
 ```
 1. **`TARGET_DIRECTORY`:** Defines the main directory path where the application scans for the input documents and images to process.
@@ -180,14 +180,14 @@ The application's behavior is controlled through a `config.json` file. Below is 
 3. **`EXCLUDED_DIRECTORIES`:** Names of directories to exclude from scanning, such as typical folders for temporary or unrelated files (e.g., `node_modules`, `venv`).
 4. **`LLM_CONTEXT_LENGTH`:** Maximum context length supported by the LLM for text processing, ensuring efficient handling of large documents.
 5. **`DIR_ORGANISED`:** Path to the directory where organized or categorized documents are stored after processing.
-6. **`tags_list_filename`:** Name of the JSON file containing the list of predefined tags used for document categorization.
-7. **`categories_list_filename`:** Name of the JSON file that holds the list of predefined categories for document organization.
-8. **`user_language`:** The base language selected by the user (e.g., `en`) for translations.
-9. **`document_languages`:** A list of languages (ISO 639-1 codes) that the application can detect and process for multilingual document support.
-10. **`img_mb_limit`:** The maximum size (in MB) allowed by LLM for image files during processing, ensuring large files are resized or compressed as required.
+6. **`CATEGORIES`:** Name of the JSON file that holds the list of predefined categories for document organization.
+7. **`USER_LANGUAGE`:** The base language selected by the user (e.g., `en`) for translations.
+8. **`DOCUMENT_LANGUAGES`:** A list of languages (ISO 639-1 codes) that the application can detect and process for multilingual document support.
+9. **`IMG_MB_LIMIT`:** The maximum size (in MB) allowed by LLM for image files during processing, ensuring large files are resized or compressed as required.
+10. **`SQLDB_DB_PATH`:** Path to where Sqlite database will be created.
+11. **`SQLITE_TABLE_NAME`:** Name of the table in the database that will store your documents.
+
 ---
-
-
 
 ## Example Workflow
 
