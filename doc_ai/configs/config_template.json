@@ -1,0 +1,32 @@
+{
+  "TARGET_DIRECTORY": "/users/username/not_organised_documents",
+  "DIR_ORGANISED": "/users/username/organised_documents",
+  "EXTENSIONS": [".pdf", ".jpeg", ".jpg", ".png"],
+  "EXCLUDED_DIRECTORIES": ["node_modules", "venv", "dist", "Intellij Projects", "ViberDownloads", "Projects", "My Tableau Repository"],
+  "TAGS": [
+    "Accounting",
+    "Medical",
+    "School",
+    "Poetry"
+  ],
+  "CATEGORIES": [
+    "Finance and Taxes",
+    "Legal",
+    "Health",
+    "Identity",
+    "Home and Property",
+    "Fitness",
+    "Travel",
+    "Hobby",
+    "Documentation",
+    "Correspondence",
+    "Work and Employment",
+    "Projects",
+    "Other"
+  ],
+  "USER_LANGUAGE": "en",
+  "DOCUMENT_LANGUAGES": ["de", "en", "ru", "bu", "ro"],
+  "TESSDATA_DIR": "./tmp/",
+  "LLM_CONTEXT_LENGTH": 200000,
+  "IMG_MB_LIMIT": 4
+}

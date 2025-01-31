@@ -24,14 +24,14 @@ class OCRProcessor:
             language (str): Language to use for OCR. Default is English ('eng', 'deu', 'bul').
         """
         self.config = config
-        os.environ['TESSDATA_PREFIX'] = self.config['tessdata_prefix']
+        os.environ['TESSDATA_PREFIX'] = self.config['TESSDATA_DIR']
         self.download_lang_files()
 
     def download_lang_files(self):
-        for lang in self.config['document_languages']:
+        for lang in self.config['DOCUMENT_LANGUAGES']:
             ocr_lang_code = lang_map[lang]
             url = f"https://github.com/tesseract-ocr/tessdata/raw/main/{ocr_lang_code}.traineddata"
-            download_path = f"{self.config['tessdata_prefix']}{ocr_lang_code}.traineddata"
+            download_path = f"{self.config['TESSDATA_DIR']}{ocr_lang_code}.traineddata"
 
             # Download the language file if needed
             self.download_language_file(url, download_path)

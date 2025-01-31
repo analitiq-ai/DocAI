@@ -3,10 +3,10 @@ from abc import ABC, abstractmethod
 from typing import Any
 from langchain.prompts import PromptTemplate
 from langchain.output_parsers import PydanticOutputParser
-from doc_manager.models import DocumentRaw
+from doc_ai.configs.models import DocumentRaw
 import base64
 from mimetypes import guess_type
-from doc_manager.prompt import IMG_PROMPT
+from doc_ai.configs.prompts import IMG_PROMPT
 from langchain_core.prompts import (
     ChatPromptTemplate,
     HumanMessagePromptTemplate

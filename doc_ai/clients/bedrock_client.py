@@ -1,7 +1,7 @@
 import boto3
 import logging
 from langchain_aws import ChatBedrock
-from doc_manager.llm_models.base_llm import BaseLlm
+from doc_ai.clients.base_llm_client import BaseLlm
 
 class BedrockClient(BaseLlm):
     """Wrapper for Large language models."""

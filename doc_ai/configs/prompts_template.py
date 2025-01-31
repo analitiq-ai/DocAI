@@ -1,9 +1,7 @@
 COMMON_INSTRUCTIONS = """
 When the document contains a date on it to which the information in the document relates, rather than the date of issue of the document, use the date to which the document relates in tags and also in the new directory name.
-Tag files that mention on the of the following companies with company name: SageData, Key2Market, Red Shoe Enterprises.
-Many documents could relate to the following companies Key2Market GmbH, SageData OOD a.k.a Key2Market EOOD, Red Shoe Enterprises, Analitiq Labs, it is important to note this in tags and directory name.
-Key2Market EOOD in bulagria was later renamed to SageData, so use SageData in tags.
-Key2Market GmbH in Germany is a separate company from Key2Market EOOD / SageData.
+Tag files that mention on the of the following companies with company name: Acme1, Acme2,.
+Many documents could relate to the following companies Acme1, Acme2, it is important to note this in tags and directory name.
 When organising the documents into folders, first split by company or personal and then use category as the next level directory name.
 
 """

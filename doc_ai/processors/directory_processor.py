@@ -2,11 +2,12 @@ import os
 import sqlite3
 from pathlib import Path
 from pytz import timezone
-from doc_manager.utils.db import create_table, add_document_db
-from doc_manager.document_processor import DocumentProcessor
-from doc_manager.models import Document
-from doc_manager.utils.general import move_file, get_file_creation_time, generate_directory_tree, ALL_LANGUAGES
+from doc_ai.clients.sqlite_client import DocumentDatabase
+from doc_ai.processors.document_processor import DocumentProcessor
+from doc_ai.configs.models import Document
+from doc_ai.utils.general import move_file, get_file_creation_time, generate_directory_tree, ALL_LANGUAGES
 from weaviate.util import generate_uuid5
+from doc_ai.utils.items_manager import ItemsManager
 
 # Define the CET timezone
 cet_timezone = timezone("CET")
@@ -14,7 +15,7 @@ cet_timezone = timezone("CET")
 # ------------------------------------------------------------------------
 # Configure Logging
 # ------------------------------------------------------------------------
-from doc_manager.logger_setup import setup_logger
+from doc_ai.utils.logger_setup import setup_logger
 import logging
 # Configure the logger
 setup_logger(log_file="errors.log", console_level=logging.INFO, file_level=logging.ERROR)
@@ -51,14 +52,15 @@ class DirectoryProcessor:
         :param dir_tree: Directory tree structure of the target directory
         """
         self.config = config
-        self.user_lang = ALL_LANGUAGES[config['user_language']]
+        self.user_lang = ALL_LANGUAGES[config['USER_LANGUAGE']]
         self.dir_tree = generate_directory_tree(config.get("DIR_ORGANISED"))
         self.target_directory = config.get("TARGET_DIRECTORY", "")
         self.extensions = config.get("EXTENSIONS", [])
         self.excluded_dirs = config.get("EXCLUDED_DIRECTORIES", [])
-        self.categories = config.get("CATEGORIES", [])
         self.document_processor = DocumentProcessor(config, llm_client, self.dir_tree)
         self.vs = vector_store_client
+        self.db = DocumentDatabase(f"{config['SQLDB_DB_PATH']}")
+        self.categories_manager = ItemsManager('CATEGORIES')
 
     def validate_config(self):
         """
@@ -73,9 +75,6 @@ class DirectoryProcessor:
         if not isinstance(self.excluded_dirs, list):
             raise ValueError("EXCLUDED_DIRECTORIES must be a list of strings.")
 
-        if not self.categories:
-            logging.warning("No CATEGORIES provided in config. Defaulting to an empty list.")
-
     def walk_through_directory(self):
         """
         Walks through the target directory, filters out excluded directories,
@@ -83,8 +82,6 @@ class DirectoryProcessor:
         appropriate DocumentProcessor method (PDF, image, or text).
         """
         self.validate_config()
-        # Create DB table if not present
-        # create_table()
 
         # Normalize extensions to have a leading dot, e.g. '.pdf'
         extensions_normalized = [
@@ -199,7 +196,7 @@ class DirectoryProcessor:
 
                     # Insert original and translated document data into DB
                     try:
-                        last_row_id = add_document_db(document)
+                        last_row_id = self.db.add_document(document, self.config['SQLITE_TABLE_NAME'])
                     except sqlite3.IntegrityError as e:
                         # Handle the UNIQUE constraint error
                         logging.error(f"Duplicate: {file_path} already exists in the database. Skipping. Error: {e}")
@@ -219,3 +216,10 @@ class DirectoryProcessor:
                     except Exception as e:
                         logging.error("Failed to move document:\n\n%s \n\n%s", document, e)
                         raise e
+
+                    # Update categories with new values if needed:
+                    updated_categories = self.categories_manager.add_items([document_structured.category])
+                    if updated_categories:
+                        new_categories = self.categories_manager.add_items()
+                        logging.info(f"Added new category: {document_structured.category}")
+                        self.document_processor.categories = ", ".join(new_categories)

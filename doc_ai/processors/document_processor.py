@@ -6,14 +6,13 @@ from pathlib import Path
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import PromptTemplate
-from doc_manager.models import DocumentRaw, DocumentLlm, DocumentStructured, DocumentStructuredTranslated
-from doc_manager.prompt import PROCESS_DOC_TEXT_PROMPT, COMMON_INSTRUCTIONS, PROCESS_TRANSLATE_DOC_TEXT_PROMPT
-from doc_manager.items_manager import ItemsManager
-from doc_manager.processors.ocr import OCRProcessor
+from doc_ai.configs.models import DocumentRaw, DocumentLlm, DocumentStructured, DocumentStructuredTranslated
+from doc_ai.configs.prompts import PROCESS_DOC_TEXT_PROMPT, COMMON_INSTRUCTIONS, PROCESS_TRANSLATE_DOC_TEXT_PROMPT
+from doc_ai.processors.ocr import OCRProcessor
 from langdetect import detect_langs
-from doc_manager.utils.general import ALL_LANGUAGES
-from doc_manager.utils.pdf_to_img import pdf_to_page_imgs
-from doc_manager.utils.img import resize_image_to_size
+from doc_ai.utils.general import ALL_LANGUAGES
+from doc_ai.utils.pdf_to_img import pdf_to_page_imgs
+from doc_ai.utils.img import resize_image_to_size
 
 # ------------------------------------------------------------------------
 # Document Processing
@@ -34,12 +33,7 @@ class DocumentProcessor:
         self.llm = llm
         self.dir_tree = dir_tree
         self.parser = PydanticOutputParser(pydantic_object=DocumentLlm)
-
-        self.tag_manager = ItemsManager(config.get("tags_list_filename"))
-        self.categories_manager = ItemsManager(config.get("categories_list_filename"))
-
-        #self.tags = self.tag_manager.get_all_items_str()
-        self.categories = self.categories_manager.get_all_items_str()
+        self.categories = ", ".join(self.config['CATEGORIES'])
 
         # Initialize the processor
         self.processor = OCRProcessor(self.config)
@@ -48,10 +42,10 @@ class DocumentProcessor:
         result = None
 
         file_size_mb = os.path.getsize(file_path)
-        img_limit_mb_in_bytes = self.config['img_mb_limit'] * 1024 * 1024  # 5 MB in bytes
+        img_limit_mb_in_bytes = self.config['IMG_MB_LIMIT'] * 1024 * 1024  # limit in bytes
 
         if file_size_mb > img_limit_mb_in_bytes:
-            logging.info(f"Image is too large, resizing to {self.config['img_mb_limit']} MB limit.")
+            logging.info(f"Image is too large, resizing to {self.config['IMG_MB_LIMIT']} MB limit.")
             resize_image_to_size(file_path, file_path, img_limit_mb_in_bytes)
 
         try:
@@ -143,10 +137,10 @@ class DocumentProcessor:
         :return: DocumentStructured object containing the translated text and summary.
         """
         if document_original.langs == user_language:
-            prompt_template =  PROCESS_DOC_TEXT_PROMPT
+            prompt_template = PROCESS_DOC_TEXT_PROMPT
             parser = PydanticOutputParser(pydantic_object=DocumentStructured)
         else:
-            prompt_template =  PROCESS_TRANSLATE_DOC_TEXT_PROMPT
+            prompt_template = PROCESS_TRANSLATE_DOC_TEXT_PROMPT
             parser = PydanticOutputParser(pydantic_object=DocumentStructuredTranslated)
 
         prompt = PromptTemplate(

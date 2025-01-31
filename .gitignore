@@ -1,4 +1,3 @@
-/core/tmp/
 /.venv/
 /.env
 /config.json
@@ -6,4 +5,4 @@
 /errors.log
 /tags.json
 /documents.db
-/tmp/
+doc_ai/configs/prompts.py
