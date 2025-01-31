@@ -16,14 +16,6 @@ This Python-based app helps you make sense of your PDFs and image files by autom
 - Utilizes Optical Character Recognition (OCR) to extract text from images.
 - Falls back to converting PDF pages into images for text extraction when PDFs are poorly formatted or image-based.
 
-#### Example:
-```python
-from core.document_processor import DocumentProcessor
-
-document = DocumentProcessor(config, llm, directory_tree).process_pdf("sample.pdf")
-print("Extracted Text:", document.text)
-```
-
 ---
 
 ### 2. **Document Summarization & Tagging**
@@ -39,7 +31,7 @@ print("Extracted Text:", document.text)
 
 #### Example:
 ```python
-from core.utils.general import move_file
+from doc_ai.utils.general import move_file
 # Organize a file into a categorized folder
 new_directory = move_file("input/document.pdf", "Organized/Taxes", "document.pdf")
 print("New Directory:", new_directory)
@@ -60,12 +52,12 @@ Pushes processed documents into a **Weaviate** vector database to enable efficie
 - **Search Functions:** Add full-text or semantic search capabilities to your document collection. Perfect for RAG (Retrieval-Augmented Generation) applications.
 - **Search Example:**
 ```python
-from core.vdb_client import VdbClient
+from doc_ai.clients.vdb_client import VdbClient
 
-    vdb = VdbClient(collection_name="Documents")
-    results = vdb.langchain_search("Find documents related to taxes")
-    for doc, score in results:
-        print(f"Document: {doc}, Score: {score}")
+ vdb = VdbClient(collection_name="Documents")
+ results = vdb.langchain_search("Find documents related to taxes")
+ for doc, score in results:
+     print(f"Document: {doc}, Score: {score}")
 ```
 
 #### Weaviate Prerequisites:
@@ -88,7 +80,7 @@ When facing unreadable PDFs, the application:
 
 #### Example:
 ```python
-from core.utils.pdf_to_img import pdf_to_page_imgs
+from doc_ai.utils.pdf_to_img import pdf_to_page_imgs
 
 images = pdf_to_page_imgs("unreadable.pdf")
 for idx, img in enumerate(images):
@@ -102,7 +94,7 @@ For scanned image files exceeding size limits (e.g., 5 MB), the app resizes and 
 
 #### Example:
 ```python
-from core.utils.img import resize_image_to_size
+from doc_ai.utils.img import resize_image_to_size
 
 resize_image_to_size("large_image.jpg", "optimized_image.jpg", max_size_mb=5)
 print("Image successfully resized under 5MB!")
@@ -193,7 +185,7 @@ The application's behavior is controlled through a `config.json` file. Below is 
 
 ### Processing Documents
 ```python
-from core.directory_processor import DirectoryProcessor
+from doc_ai.processors.directory_processor import DirectoryProcessor
 
 config = {}  # Load your configuration
 directory_processor = DirectoryProcessor(config, llm_client, vector_store_client)
@@ -202,7 +194,7 @@ directory_processor.walk_through_directory()
 
 ### Searching Documents
 ```python
-from core.vdb_client import VdbClient
+from doc_ai.clients.vdb_client import VdbClient
 
 vdb = VdbClient(collection_name="Documents")
 results = vdb.langchain_search("Find tax-related documents")
