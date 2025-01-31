@@ -125,6 +125,16 @@ poetry install
 ```shell script
 docker run -d -p 8080:8080 semitechnologies/weaviate:latest
 ```
+You will need to create weaviate collection and schema one time to store your documents. 
+```python
+from doc_ai.clients.vdb_client import VdbClient
+
+vector_client = VdbClient()
+try:
+  vector_client.create_collection()
+except Exception as e:
+  print(e)
+```
 
 4. Install Ollama and pull `nomic-embed-text` encoder and `llama3.2` llm.
 ```shell script
@@ -187,7 +197,8 @@ The application's behavior is controlled through a `config.json` file. Below is 
 ### Processing Documents
 ```python
 from doc_ai.processors.directory_processor import DirectoryProcessor
-
+from doc_ai.clients.vdb_client import VdbClient
+vector_client = VdbClient()
 config = {}  # Load your configuration
 directory_processor = DirectoryProcessor(config, llm_client, vector_store_client)
 directory_processor.walk_through_directory()
