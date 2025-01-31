@@ -7,7 +7,7 @@ class DocumentDatabase:
     _instance = None
     _lock = threading.Lock()
 
-    def __new__(cls, db_path="documents.db"):
+    def __new__(cls, db_path):
         with cls._lock:
             if cls._instance is None:
                 cls._instance = super(DocumentDatabase, cls).__new__(cls)
@@ -18,12 +18,12 @@ class DocumentDatabase:
         self.connection = sqlite3.connect(db_path, check_same_thread=False)
         self.connection_lock = threading.Lock()
 
-    def create_table(self):
+    def create_table(self, table_name = 'documents'):
         with self.connection_lock:
             cursor = self.connection.cursor()
             cursor.execute(
-                """
-                CREATE TABLE IF NOT EXISTS documents (
+                f"""
+                CREATE TABLE IF NOT EXISTS {table_name} (
                     id            INTEGER PRIMARY KEY AUTOINCREMENT,
                     summary       TEXT NOT NULL,
                     category      TEXT NOT NULL,
@@ -41,7 +41,7 @@ class DocumentDatabase:
             )
             self.connection.commit()
 
-    def add_document(self, document: Document):
+    def add_document(self, document: Document, table_name = 'documents'):
         with self.connection_lock:
             cursor = self.connection.cursor()
             data = document.model_dump()
@@ -49,8 +49,8 @@ class DocumentDatabase:
             data["langs"] = json.dumps(data["langs"])
 
             cursor.execute(
-                """
-                INSERT INTO documents (
+                f"""
+                INSERT INTO {table_name} (
                     title, summary, text, text_orig, category,
                     filepath, tags, timestamp, langs, filepath_orig, vdb_uuid
                 )

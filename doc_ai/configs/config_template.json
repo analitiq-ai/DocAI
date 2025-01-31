@@ -1,13 +1,32 @@
 {
   "TARGET_DIRECTORY": "/users/username/not_organised_documents",
+  "DIR_ORGANISED": "/users/username/organised_documents",
   "EXTENSIONS": [".pdf", ".jpeg", ".jpg", ".png"],
   "EXCLUDED_DIRECTORIES": ["node_modules", "venv", "dist", "Intellij Projects", "ViberDownloads", "Projects", "My Tableau Repository"],
+  "TAGS": [
+    "Accounting",
+    "Medical",
+    "School",
+    "Poetry"
+  ],
+  "CATEGORIES": [
+    "Finance and Taxes",
+    "Legal",
+    "Health",
+    "Identity",
+    "Home and Property",
+    "Fitness",
+    "Travel",
+    "Hobby",
+    "Documentation",
+    "Correspondence",
+    "Work and Employment",
+    "Projects",
+    "Other"
+  ],
+  "USER_LANGUAGE": "en",
+  "DOCUMENT_LANGUAGES": ["de", "en", "ru", "bu", "ro"],
+  "TESSDATA_DIR": "./tmp/",
   "LLM_CONTEXT_LENGTH": 200000,
-  "DIR_ORGANISED": "/users/username/organised_documents",
-  "tags_list_filename": "tags.json",
-  "categories_list_filename": "categories.json",
-  "user_language": "en",
-  "document_languages": ["de", "en", "ru", "bu", "ro"],
-  "tessdata_prefix": "./core/tmp/",
-  "img_mb_limit": 4
+  "IMG_MB_LIMIT": 4
 }

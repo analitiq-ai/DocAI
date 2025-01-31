@@ -1,6 +1,6 @@
 import weaviate
 from weaviate.classes.config import Configure
-from doc_ai.models import Document
+from doc_ai.configs.models import Document
 from weaviate.util import generate_uuid5
 from langchain_weaviate.vectorstores import WeaviateVectorStore
 from langchain_ollama import OllamaEmbeddings
