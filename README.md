@@ -198,8 +198,11 @@ The application's behavior is controlled through a `config.json` file. Below is 
 ```python
 from doc_ai.processors.directory_processor import DirectoryProcessor
 from doc_ai.clients.vdb_client import VdbClient
-vector_client = VdbClient()
-config = {}  # Load your configuration
+from doc_ai.clients.bedrock_client import BedrockClient
+
+llm_client = BedrockClient()
+vector_store_client = VdbClient()
+config = {}  # Load your configuration from config.json
 directory_processor = DirectoryProcessor(config, llm_client, vector_store_client)
 directory_processor.walk_through_directory()
 ```
